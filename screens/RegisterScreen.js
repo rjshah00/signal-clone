@@ -3,6 +3,7 @@ import { StatusBar } from 'react-native'
 import { KeyboardAvoidingView } from 'react-native'
 import { StyleSheet, View } from 'react-native'
 import { Button, Input, Text } from 'react-native-elements';
+import {db,auth} from "../firebase";
 
 const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState("");
@@ -16,6 +17,14 @@ const RegisterScreen = ({ navigation }) => {
         });
     }, [navigation]);
     const register= () =>{
+        auth.createUserWithEmailAndPassword(email,password)
+        .then(authUser =>{
+            authUser.user.updateProfile({
+                displayname:name,
+                photoURL : imageurl || "https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png"
+            })
+        })
+        .catch(error => alert(error.message))
 
     };
     return (
