@@ -21,11 +21,12 @@ const RegisterScreen = ({ navigation }) => {
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
         authUser.user.updateProfile({
-          displayname: name,
+          displayName: name,
           photoURL:
             imageurl ||
             "https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png",
         });
+        console.log(authUser);
       })
       .catch((error) => alert(error.message));
   };

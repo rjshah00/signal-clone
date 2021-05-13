@@ -14,7 +14,6 @@ const globalScreenOptions = {
   headerStyle: { backgroundColor: "#2C6BED" },
   headerTitleStyle: { color: "white" },
   headerTintColor: "white",
-  headerTitleAlign: "center",
 };
 export default function App() {
   return (

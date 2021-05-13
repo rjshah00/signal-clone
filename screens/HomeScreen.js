@@ -56,7 +56,7 @@ function HomeScreen({ navigation }) {
             activeOpacity={0.5}
             onPress={() => navigation.navigate("AddChat")}
           >
-            <Ionicons name="md-add-circle-sharp" size={24} color="black" />{" "}
+            <Ionicons name="md-add-circle-sharp" size={24} color="black" />
           </TouchableOpacity>
         </View>
       ),
