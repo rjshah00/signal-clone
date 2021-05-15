@@ -33,7 +33,7 @@ const AddChatScreen = ({ navigation }) => {
         }
         onSubmitEditing={createChat}
       />
-      <Button onPress={createChat} title="Add Chat" />
+      <Button disabled={!input} onPress={createChat} title="Add Chat" />
     </View>
   );
 };

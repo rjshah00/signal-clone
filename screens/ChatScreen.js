@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -21,6 +21,7 @@ import { db, auth } from "../firebase.js";
 const ChatScreen = ({ navigation, route }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const [profile, setProfile] = useState({});
   const sendMessage = () => {
     Keyboard.dismiss();
     db.collection("chats").doc(route.params.id).collection("messages").add({
@@ -47,7 +48,21 @@ const ChatScreen = ({ navigation, route }) => {
           }))
         )
       );
-    return unsubscribe;
+
+    const unsubscribe2 = db
+      .collection("chats")
+      .doc(route.params.id)
+      .collection("messages")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) =>
+        setProfile(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data().photoURL,
+          }))
+        )
+      );
+    return unsubscribe, unsubscribe2;
   }, [route]);
 
   useLayoutEffect(() => {
@@ -66,11 +81,14 @@ const ChatScreen = ({ navigation, route }) => {
             rounded
             source={{
               uri:
-                "https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-512.png",
+                profile?.[0]?.data ||
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3hS0E8OFdhIyZec5Tszr-SkkvonYMnY9HdQ&usqp=CAU",
             }}
           />
           <Text style={{ color: "white", margin: 10, fontWeight: "800" }}>
             {route.params.chatName}
+            {console.log("profile image")}
+            {console.log(profile)}
           </Text>
         </View>
       ),
@@ -113,7 +131,7 @@ const ChatScreen = ({ navigation, route }) => {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, messages]);
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar style="light" />
